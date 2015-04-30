@@ -34,7 +34,7 @@ var app = {
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
-        window.location = "http://f3mobile.apphb.com";
+        window.location.href = "http://f3mobile.apphb.com";
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
