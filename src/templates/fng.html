@@ -1,0 +1,22 @@
+<section class="section container-fluid">
+    <h1 class="page-header">FNG Subscribe</h1>
+    <form ng-controller="fngController" ng-submit='submit()'>
+        <input class="hidden" type="hidden" ng-model="mailchimp.username" ng-init="mailchimp.username='username'">
+        <input class="hidden" type="hidden" ng-model="mailchimp.dc" ng-init="mailchimp.dc='us1'">
+        <input class="hidden" type="hidden" ng-model="mailchimp.u" ng-init="mailchimp.u='782bcc4984694d3254ce0e83c8777c25-us10'">
+        <input class="hidden" type="hidden" ng-model="mailchimp.id" ng-init="mailchimp.id='cda6f4f549'">
+        <div class="form-group">
+            <label>First Name</label>
+            <input type="text" id="firstName" name="firstName" class="form-control" ng-model="contact.firstName" />
+        </div>
+        <div class="form-group">
+            <label>Last Name</label>
+            <input type="text" id="lastName" name="lastName" class="form-control" ng-model="contact.lastName" />
+        </div>
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="email" name="email" class="form-control" ng-model="contact.email" />
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+</section>
