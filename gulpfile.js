@@ -179,10 +179,6 @@ gulp.task('html', function () {
 gulp.task('angular-toastr', function () {
     gulp.src(['./bower_components/angular-toastr/dist/angular-toastr.tpls.js'])
         .pipe(gulp.dest(path.join(config.src,'js')));
-    gulp.src(['./bower_components/angular-toastr/dist/angular-toastr.css'])
-        .pipe(gulp.dest(path.join(config.src,'less')));
-    gulp.src(['./bower_components/angular-toastr/dist/angular-toastr.css'])
-        .pipe(gulp.dest(path.join(config.dest,'css')));
 });
 
 
