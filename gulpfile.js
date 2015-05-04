@@ -205,7 +205,7 @@ gulp.task('less', function () {
                         screens: ['0px']
                     }
                 }))
-                //.pipe(cssmin())
+                .pipe(cssmin())
                 .pipe(rename({
                     suffix: '.min'
                 }))
@@ -229,10 +229,10 @@ gulp.task('less', function () {
                         module: 'area51Tools'
                     }))
                 )
-                //.pipe(sourcemaps.init())
+                .pipe(sourcemaps.init())
                 .pipe(concat('app.js'))
                 .pipe(ngAnnotate())
-                //.pipe(uglify())
+                .pipe(uglify())
                 .pipe(rename({
                     suffix: '.min'
                 }))
