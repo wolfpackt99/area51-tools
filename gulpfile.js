@@ -6,21 +6,22 @@
 
 var config = {
     dest: 'www',
+    src: 'src',
     cordova: true,
     minify_images: true,
 
     vendor: {
         js: [
-      './bower_components/angular/angular.js',
-      './bower_components/angular-route/angular-route.js',
-      './bower_components/mobile-angular-ui/dist/js/mobile-angular-ui.js'
-    ],
-
+            './bower_components/angular/angular.js',
+            './bower_components/angular-animate/angular-animate.js',
+            './bower_components/angular-route/angular-route.js',            
+            './bower_components/mobile-angular-ui/dist/js/mobile-angular-ui.js'
+        ],
         fonts: [
-      './bower_components/font-awesome/fonts/fontawesome-webfont.*'
-    ]
+            './bower_components/font-awesome/fonts/fontawesome-webfont.*'
+        ]
     },
-
+    
     server: {
         host: '0.0.0.0',
         port: '8000'
@@ -92,9 +93,9 @@ gulp.task('clean', function (cb) {
         path.join(config.dest, 'css'),
         path.join(config.dest, 'js'),
         path.join(config.dest, 'fonts')
-      ], {
-            read: false
-        })
+    ], {
+        read: false
+    })
         .pipe(rimraf());
 });
 
@@ -175,6 +176,15 @@ gulp.task('html', function () {
         .pipe(gulp.dest(config.dest));
 });
 
+gulp.task('angular-toastr', function () {
+    gulp.src(['./bower_components/angular-toastr/dist/angular-toastr.tpls.js'])
+        .pipe(gulp.dest(path.join(config.src,'js')));
+    gulp.src(['./bower_components/angular-toastr/dist/angular-toastr.css'])
+        .pipe(gulp.dest(path.join(config.src,'less')));
+    gulp.src(['./bower_components/angular-toastr/dist/angular-toastr.css'])
+        .pipe(gulp.dest(path.join(config.dest,'css')));
+});
+
 
 /*======================================================================
 =            Compile, minify, mobilize less                            =
@@ -182,110 +192,110 @@ gulp.task('html', function () {
 
 gulp.task('less', function () {
     gulp.src(['./src/less/app.less', './src/less/responsive.less'])
-        .pipe(less({
-            paths: [path.resolve(__dirname, 'src/less'), path.resolve(__dirname, 'bower_components')]
-        }))
-        .pipe(mobilizer('app.css', {
-            'app.css': {
-                hover: 'exclude',
-                screens: ['0px']
-            },
-            'hover.css': {
-                hover: 'only',
-                screens: ['0px']
+                .pipe(less({
+                    paths: [path.resolve(__dirname, 'src/less'), path.resolve(__dirname, 'bower_components')]
+                }))
+                .pipe(mobilizer('app.css', {
+                    'app.css': {
+                        hover: 'exclude',
+                        screens: ['0px']
+                    },
+                    'hover.css': {
+                        hover: 'only',
+                        screens: ['0px']
+                    }
+                }))
+                //.pipe(cssmin())
+                .pipe(rename({
+                    suffix: '.min'
+                }))
+                .pipe(gulp.dest(path.join(config.dest, 'css')));
+            });
+
+
+        /*====================================================================
+        =            Compile and minify js generating source maps            =
+        ====================================================================*/
+        // - Orders ng deps automatically
+        // - Precompile templates to ng templateCache
+
+        gulp.task('js', function () {
+            streamqueue({
+                        objectMode: true
+                    },
+                    gulp.src(config.vendor.js),
+                    gulp.src('./src/js/**/*.js').pipe(ngFilesort()),
+                    gulp.src(['src/templates/**/*.html']).pipe(templateCache({
+                        module: 'area51Tools'
+                    }))
+                )
+                //.pipe(sourcemaps.init())
+                .pipe(concat('app.js'))
+                .pipe(ngAnnotate())
+                //.pipe(uglify())
+                .pipe(rename({
+                    suffix: '.min'
+                }))
+                //.pipe(sourcemaps.write('.'))
+                .pipe(gulp.dest(path.join(config.dest, 'js')));
+        });
+
+
+        /*===================================================================
+        =            Watch for source changes and rebuild/reload            =
+        ===================================================================*/
+
+        gulp.task('watch', function () {
+            if (typeof config.server === 'object') {
+                gulp.watch([config.dest + '/**/*'], ['livereload']);
             }
-        }))
-        .pipe(cssmin())
-        .pipe(rename({
-            suffix: '.min'
-        }))
-        .pipe(gulp.dest(path.join(config.dest, 'css')));
-});
+            gulp.watch(['./src/html/**/*'], ['html']);
+            gulp.watch(['./src/less/**/*'], ['less']);
+            gulp.watch(['./src/js/**/*', './src/templates/**/*', config.vendor.js], ['js']);
+            gulp.watch(['./src/images/**/*'], ['images']);
+        });
 
 
-/*====================================================================
-=            Compile and minify js generating source maps            =
-====================================================================*/
-// - Orders ng deps automatically
-// - Precompile templates to ng templateCache
+        /*===================================================
+        =            Starts a Weinre Server                 =
+        ===================================================*/
 
-gulp.task('js', function () {
-    streamqueue({
-                objectMode: true
-            },
-            gulp.src(config.vendor.js),
-            gulp.src('./src/js/**/*.js').pipe(ngFilesort()),
-            gulp.src(['src/templates/**/*.html']).pipe(templateCache({
-                module: 'area51Tools'
-            }))
-        )
-        .pipe(sourcemaps.init())
-        .pipe(concat('app.js'))
-        .pipe(ngAnnotate())
-        .pipe(uglify())
-        .pipe(rename({
-            suffix: '.min'
-        }))
-        .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest(path.join(config.dest, 'js')));
-});
+        gulp.task('weinre', function () {
+            if (typeof config.weinre === 'object') {
+                var weinre = require('./node_modules/weinre/lib/weinre');
+                weinre.run(config.weinre);
+            } else {
+                throw new Error('Weinre is not configured');
+            }
+        });
 
 
-/*===================================================================
-=            Watch for source changes and rebuild/reload            =
-===================================================================*/
+        /*======================================
+        =            Build Sequence            =
+        ======================================*/
 
-gulp.task('watch', function () {
-    if (typeof config.server === 'object') {
-        gulp.watch([config.dest + '/**/*'], ['livereload']);
-    }
-    gulp.watch(['./src/html/**/*'], ['html']);
-    gulp.watch(['./src/less/**/*'], ['less']);
-    gulp.watch(['./src/js/**/*', './src/templates/**/*', config.vendor.js], ['js']);
-    gulp.watch(['./src/images/**/*'], ['images']);
-});
+        gulp.task('build', function (done) {
+            var tasks = ['html', 'fonts', 'images', 'angular-toastr', 'less', 'js'];
+            seq('clean', tasks, done);
+        });
 
 
-/*===================================================
-=            Starts a Weinre Server                 =
-===================================================*/
+        /*====================================
+        =            Default Task            =
+        ====================================*/
 
-gulp.task('weinre', function () {
-    if (typeof config.weinre === 'object') {
-        var weinre = require('./node_modules/weinre/lib/weinre');
-        weinre.run(config.weinre);
-    } else {
-        throw new Error('Weinre is not configured');
-    }
-});
+        gulp.task('default', function (done) {
+            var tasks = [];
 
+            if (typeof config.weinre === 'object') {
+                tasks.push('weinre');
+            }
 
-/*======================================
-=            Build Sequence            =
-======================================*/
+            if (typeof config.server === 'object') {
+                tasks.push('connect');
+            }
 
-gulp.task('build', function (done) {
-    var tasks = ['html', 'fonts', 'images', 'less', 'js'];
-    seq('clean', tasks, done);
-});
+            tasks.push('watch');
 
-
-/*====================================
-=            Default Task            =
-====================================*/
-
-gulp.task('default', function (done) {
-    var tasks = [];
-
-    if (typeof config.weinre === 'object') {
-        tasks.push('weinre');
-    }
-
-    if (typeof config.server === 'object') {
-        tasks.push('connect');
-    }
-
-    tasks.push('watch');
-
-    seq('build', tasks, done);
-});
+            seq('build', tasks, done);
+        });

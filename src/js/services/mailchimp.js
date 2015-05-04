@@ -15,7 +15,9 @@ angular.module("area51Tools.services.mailchimp",[])
                 },
                 merge_vars:{
                     fname: contact.firstName,
-                    lname: contact.lastName
+                    lname: contact.lastName,
+                    f3name: contact.f3Name,
+                    workout: contact.workout
                 },
                 double_optin: false,
                 send_welcome: true,

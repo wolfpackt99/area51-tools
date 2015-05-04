@@ -1,18 +1,21 @@
-angular.module("area51Tools.controllers.fng", [])
-    .controller('fngController', ['$scope', 'mailchimp', function ($scope, mailchimp) {
+angular.module("area51Tools.controllers.fng", ['ngAnimate', 'toastr'])
+    .controller('fngController', ['$scope', 'mailchimp', 'toastr', function ($scope, mailchimp, toastr) {
         //stuff
-        $scope.contact = {
+        $scope.defaultContact = {
             firstName: '',
+            f3Name: '',
+            workout: '',
             lastName: '',
             email: ''
         };
 
         $scope.submit = function () {
-            alert('test');
             mailchimp($scope.contact, function () {
-                alert('success');
-            }, function () {
-                alert('failed');
+                toastr.success($scope.contact.firstName + ' has been subscribed.');
+                $scope.contact = angular.copy($scope.defaultContact);
+            }, function (data) {
+                toastr.error(data.error);
             });
-        }
-}]);
+        };
+    }
+                                 ]);
