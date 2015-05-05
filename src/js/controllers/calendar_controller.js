@@ -1,5 +1,5 @@
 angular.module("area51Tools.controllers.calendar", ['toastr'])
-    .controller('calendarController', ['$scope','toastr', function ($scope, toastr) {
+    .controller('calendarController', ['$scope', 'toastr', function ($scope, toastr) {
         "use strict";
         //16226295143-1tn95lqchvbqh4385bqjq422jthvmm16.apps.googleusercontent.com
         var CLIENT_ID = '16226295143-1tn95lqchvbqh4385bqjq422jthvmm16.apps.googleusercontent.com',
@@ -34,11 +34,15 @@ angular.module("area51Tools.controllers.calendar", ['toastr'])
 
         angular.element(document).ready(function () {
             logger('begin auth call');
-            gapi.auth.authorize({
-                'client_id': CLIENT_ID,
-                'scope': SCOPES,
-                'immediate': true
-            }, handleAuthResult);
+            try {
+                gapi.auth.authorize({
+                    'client_id': CLIENT_ID,
+                    'scope': SCOPES,
+                    'immediate': true
+                }, handleAuthResult);
+            } catch (e) {
+                logger('auth call failed: ' + e.message);
+            }
         });
 
         /**
@@ -129,8 +133,8 @@ angular.module("area51Tools.controllers.calendar", ['toastr'])
 
             });
         }
-        
-        function logger(message){
+
+        function logger(message) {
             toastr.info(message);
         }
             }]);
