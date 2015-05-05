@@ -1,0 +1,24 @@
+<div class="scrollable section container-fluid" ng-controller="calendarController">
+    <div class="scrollable-content">
+        <h1 class="page-header">Upcoming Schedule</h1>
+        <div id="authorize-div" style="display: none">
+            <span>Authorize access to calendar</span>
+            <!--Button for the user to click to initiate auth sequence -->
+            <button id="authorize-button" ng-click="handleAuthClick()">
+                Authorize
+            </button>
+        </div>
+        <div>
+            <div ng-repeat="cal in allEvents | orderBy:'name'">
+                <p>{{cal.name}}</p>
+                <ul class="list-group">
+                    <li ng-repeat="item in cal.items" class="list-group-item">{{item.start.date}} - {{item.summary}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    </section>

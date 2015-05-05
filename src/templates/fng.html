@@ -1,64 +1,66 @@
-<section class="section container-fluid">
-    <h1 class="page-header">FNG Subscribe</h1>
-    <form ng-controller="fngController" ng-submit='submit()'>
-        <input class="hidden" type="hidden" ng-model="mailchimp.username" ng-init="mailchimp.username='username'">
-        <input class="hidden" type="hidden" ng-model="mailchimp.dc" ng-init="mailchimp.dc='us1'">
-        <input class="hidden" type="hidden" ng-model="mailchimp.u" ng-init="mailchimp.u='782bcc4984694d3254ce0e83c8777c25-us10'">
-        <input class="hidden" type="hidden" ng-model="mailchimp.id" ng-init="mailchimp.id='cda6f4f549'">
-        <div class="form-group">
-            <label>First Name</label>
-            <input type="text" id="firstName" name="firstName" class="form-control" ng-model="contact.firstName" placeholder="first name" required />
-        </div>
-        <div class="form-group">
-            <label>Last Name</label>
-            <input type="text" id="lastName" name="lastName" class="form-control" ng-model="contact.lastName" placeholder="last name" required/>
-        </div>
-        <div class="form-group">
-            <label>Email</label>
-            <input type="email" id="email" name="email" class="form-control" ng-model="contact.email" placeholder="email address" required/>
-        </div>
-        <div class="form-group">
-            <label>F3 Name</label>
-            <input type="text" id="f3name" name="f3name" class="form-control" ng-model="contact.f3Name" placeholder="f3 nickname" required/>
-        </div>
-        <div class="form-group">
-            <label>Workout</label>
-            <select id='workout' name='workout' class="form-control" ng-model='contact.workout' class="form-control">
-                <option value=''>Select a workout</option>
-                <option value='Anvil'>Anvil</option>
-                <option value='Area51'>Area51</option>
-                <option value='Ascent'>Ascent</option>
-                <option value='Bagpipe'>Bagpipe</option>
-                <option value='Base Camp'>Base Camp</option>
-                <option value='Centurion'>Centurion</option>
-                <option value='Committment'>Committment</option>
-                <option value='Day Zero'>Day Zero</option>
-                <option value='Death Valley'>Death Valley</option>
-                <option value='DMZ'>DMZ</option>
-                <option value='Dromedary'>Dromedary</option>
-                <option value='Fast Twitch'>Fast Twitch</option>
-                <option value='Fight Club'>Fight Club</option>
-                <option value='Foxhole'>Foxhole</option>
-                <option value='Hydra'>Hydra</option>
-                <option value='Joust'>Joust</option>
-                <option value='Kevlar'>Kevlar</option>
-                <option value='Meathead'>Meathead</option>
-                <option value='Olympus'>Olympus</option>
-                <option value='Outland'>Outland</option>
-                <option value='Overdrive'>Overdrive</option>
-                <option value='Peak 51'>Peak 51</option>
-                <option value='Rebel Yell'>Rebel Yell</option>
-                <option value='Skunk Works'>Skunk Works</option>
-                <option value='Stonehenge'>Stonehenge</option>
-                <option value='Swift'>Swift</option>
-                <option value='The Brave'>The Brave</option>
-                <option value='The Charge'>The Charge</option>
-                <option value='The Devils Turn'>The Devil's Turn</option>
-                <option value='The Matrix'>The Matrix</option>
-                <option value='The Maul'>The Maul</option>
-                <option value='The Rock'>The Rock</option>
-            </select>
-        </div>
-        <button type="submit" class="btn btn-default">Submit</button>
-    </form>
+<section class="scrollable section container-fluid">
+    <div class="scrollable-content">
+        <h1 class="page-header">FNG Subscribe</h1>
+        <form ng-controller="fngController" ng-submit='submit()'>
+            <input class="hidden" type="hidden" ng-model="mailchimp.username" ng-init="mailchimp.username='username'">
+            <input class="hidden" type="hidden" ng-model="mailchimp.dc" ng-init="mailchimp.dc='us1'">
+            <input class="hidden" type="hidden" ng-model="mailchimp.u" ng-init="mailchimp.u='782bcc4984694d3254ce0e83c8777c25-us10'">
+            <input class="hidden" type="hidden" ng-model="mailchimp.id" ng-init="mailchimp.id='cda6f4f549'">
+            <div class="form-group">
+                <label>First Name</label>
+                <input type="text" id="firstName" name="firstName" class="form-control" ng-model="contact.firstName" placeholder="first name" required />
+            </div>
+            <div class="form-group">
+                <label>Last Name</label>
+                <input type="text" id="lastName" name="lastName" class="form-control" ng-model="contact.lastName" placeholder="last name" required/>
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="email" name="email" class="form-control" ng-model="contact.email" placeholder="email address" required/>
+            </div>
+            <div class="form-group">
+                <label>F3 Name</label>
+                <input type="text" id="f3name" name="f3name" class="form-control" ng-model="contact.f3Name" placeholder="f3 nickname" required/>
+            </div>
+            <div class="form-group">
+                <label>Workout</label>
+                <select id='workout' name='workout' class="form-control" ng-model='contact.workout' class="form-control">
+                    <option value=''>Select a workout</option>
+                    <option value='Anvil'>Anvil</option>
+                    <option value='Area51'>Area51</option>
+                    <option value='Ascent'>Ascent</option>
+                    <option value='Bagpipe'>Bagpipe</option>
+                    <option value='Base Camp'>Base Camp</option>
+                    <option value='Centurion'>Centurion</option>
+                    <option value='Committment'>Committment</option>
+                    <option value='Day Zero'>Day Zero</option>
+                    <option value='Death Valley'>Death Valley</option>
+                    <option value='DMZ'>DMZ</option>
+                    <option value='Dromedary'>Dromedary</option>
+                    <option value='Fast Twitch'>Fast Twitch</option>
+                    <option value='Fight Club'>Fight Club</option>
+                    <option value='Foxhole'>Foxhole</option>
+                    <option value='Hydra'>Hydra</option>
+                    <option value='Joust'>Joust</option>
+                    <option value='Kevlar'>Kevlar</option>
+                    <option value='Meathead'>Meathead</option>
+                    <option value='Olympus'>Olympus</option>
+                    <option value='Outland'>Outland</option>
+                    <option value='Overdrive'>Overdrive</option>
+                    <option value='Peak 51'>Peak 51</option>
+                    <option value='Rebel Yell'>Rebel Yell</option>
+                    <option value='Skunk Works'>Skunk Works</option>
+                    <option value='Stonehenge'>Stonehenge</option>
+                    <option value='Swift'>Swift</option>
+                    <option value='The Brave'>The Brave</option>
+                    <option value='The Charge'>The Charge</option>
+                    <option value='The Devils Turn'>The Devil's Turn</option>
+                    <option value='The Matrix'>The Matrix</option>
+                    <option value='The Maul'>The Maul</option>
+                    <option value='The Rock'>The Rock</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-default">Submit</button>
+        </form>
+    </div>
 </section>

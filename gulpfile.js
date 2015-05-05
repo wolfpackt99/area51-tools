@@ -14,14 +14,14 @@ var config = {
         js: [
             './bower_components/angular/angular.js',
             './bower_components/angular-animate/angular-animate.js',
-            './bower_components/angular-route/angular-route.js',            
+            './bower_components/angular-route/angular-route.js',
             './bower_components/mobile-angular-ui/dist/js/mobile-angular-ui.js'
         ],
         fonts: [
             './bower_components/font-awesome/fonts/fontawesome-webfont.*'
         ]
     },
-    
+
     server: {
         host: '0.0.0.0',
         port: '8000'
@@ -94,8 +94,8 @@ gulp.task('clean', function (cb) {
         path.join(config.dest, 'js'),
         path.join(config.dest, 'fonts')
     ], {
-        read: false
-    })
+            read: false
+        })
         .pipe(rimraf());
 });
 
@@ -178,7 +178,7 @@ gulp.task('html', function () {
 
 gulp.task('angular-toastr', function () {
     gulp.src(['./bower_components/angular-toastr/dist/angular-toastr.tpls.js'])
-        .pipe(gulp.dest(path.join(config.src,'js')));
+        .pipe(gulp.dest(path.join(config.src, 'js')));
 });
 
 
@@ -188,110 +188,110 @@ gulp.task('angular-toastr', function () {
 
 gulp.task('less', function () {
     gulp.src(['./src/less/app.less', './src/less/responsive.less'])
-                .pipe(less({
-                    paths: [path.resolve(__dirname, 'src/less'), path.resolve(__dirname, 'bower_components')]
-                }))
-                .pipe(mobilizer('app.css', {
-                    'app.css': {
-                        hover: 'exclude',
-                        screens: ['0px']
-                    },
-                    'hover.css': {
-                        hover: 'only',
-                        screens: ['0px']
-                    }
-                }))
-                .pipe(cssmin())
-                .pipe(rename({
-                    suffix: '.min'
-                }))
-                .pipe(gulp.dest(path.join(config.dest, 'css')));
-            });
-
-
-        /*====================================================================
-        =            Compile and minify js generating source maps            =
-        ====================================================================*/
-        // - Orders ng deps automatically
-        // - Precompile templates to ng templateCache
-
-        gulp.task('js', function () {
-            streamqueue({
-                        objectMode: true
-                    },
-                    gulp.src(config.vendor.js),
-                    gulp.src('./src/js/**/*.js').pipe(ngFilesort()),
-                    gulp.src(['src/templates/**/*.html']).pipe(templateCache({
-                        module: 'area51Tools'
-                    }))
-                )
-                .pipe(sourcemaps.init())
-                .pipe(concat('app.js'))
-                .pipe(ngAnnotate())
-                .pipe(uglify())
-                .pipe(rename({
-                    suffix: '.min'
-                }))
-                //.pipe(sourcemaps.write('.'))
-                .pipe(gulp.dest(path.join(config.dest, 'js')));
-        });
-
-
-        /*===================================================================
-        =            Watch for source changes and rebuild/reload            =
-        ===================================================================*/
-
-        gulp.task('watch', function () {
-            if (typeof config.server === 'object') {
-                gulp.watch([config.dest + '/**/*'], ['livereload']);
+        .pipe(less({
+            paths: [path.resolve(__dirname, 'src/less'), path.resolve(__dirname, 'bower_components')]
+        }))
+        .pipe(mobilizer('app.css', {
+            'app.css': {
+                hover: 'exclude',
+                screens: ['0px']
+            },
+            'hover.css': {
+                hover: 'only',
+                screens: ['0px']
             }
-            gulp.watch(['./src/html/**/*'], ['html']);
-            gulp.watch(['./src/less/**/*'], ['less']);
-            gulp.watch(['./src/js/**/*', './src/templates/**/*', config.vendor.js], ['js']);
-            gulp.watch(['./src/images/**/*'], ['images']);
-        });
+        }))
+        .pipe(cssmin())
+        .pipe(rename({
+            suffix: '.min'
+        }))
+        .pipe(gulp.dest(path.join(config.dest, 'css')));
+});
 
 
-        /*===================================================
-        =            Starts a Weinre Server                 =
-        ===================================================*/
+/*====================================================================
+=            Compile and minify js generating source maps            =
+====================================================================*/
+// - Orders ng deps automatically
+// - Precompile templates to ng templateCache
 
-        gulp.task('weinre', function () {
-            if (typeof config.weinre === 'object') {
-                var weinre = require('./node_modules/weinre/lib/weinre');
-                weinre.run(config.weinre);
-            } else {
-                throw new Error('Weinre is not configured');
-            }
-        });
+gulp.task('js', function () {
+    streamqueue({
+                objectMode: true
+            },
+            gulp.src(config.vendor.js),
+            gulp.src('./src/js/**/*.js').pipe(ngFilesort()),
+            gulp.src(['src/templates/**/*.html']).pipe(templateCache({
+                module: 'area51Tools'
+            }))
+        )
+        .pipe(sourcemaps.init())
+        .pipe(concat('app.js'))
+        .pipe(ngAnnotate())
+        .pipe(uglify())
+        .pipe(rename({
+            suffix: '.min'
+        }))
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest(path.join(config.dest, 'js')));
+});
 
 
-        /*======================================
-        =            Build Sequence            =
-        ======================================*/
+/*===================================================================
+=            Watch for source changes and rebuild/reload            =
+===================================================================*/
 
-        gulp.task('build', function (done) {
-            var tasks = ['html', 'fonts', 'images', 'angular-toastr', 'less', 'js'];
-            seq('clean', tasks, done);
-        });
+gulp.task('watch', function () {
+    if (typeof config.server === 'object') {
+        gulp.watch([config.dest + '/**/*'], ['livereload']);
+    }
+    gulp.watch(['./src/html/**/*'], ['html']);
+    gulp.watch(['./src/less/**/*'], ['less']);
+    gulp.watch(['./src/js/**/*', './src/templates/**/*', config.vendor.js], ['js']);
+    gulp.watch(['./src/images/**/*'], ['images']);
+});
 
 
-        /*====================================
-        =            Default Task            =
-        ====================================*/
+/*===================================================
+=            Starts a Weinre Server                 =
+===================================================*/
 
-        gulp.task('default', function (done) {
-            var tasks = [];
+gulp.task('weinre', function () {
+    if (typeof config.weinre === 'object') {
+        var weinre = require('./node_modules/weinre/lib/weinre');
+        weinre.run(config.weinre);
+    } else {
+        throw new Error('Weinre is not configured');
+    }
+});
 
-            if (typeof config.weinre === 'object') {
-                tasks.push('weinre');
-            }
 
-            if (typeof config.server === 'object') {
-                tasks.push('connect');
-            }
+/*======================================
+=            Build Sequence            =
+======================================*/
 
-            tasks.push('watch');
+gulp.task('build', function (done) {
+    var tasks = ['html', 'fonts', 'images', 'angular-toastr', 'less', 'js'];
+    seq('clean', tasks, done);
+});
 
-            seq('build', tasks, done);
-        });
+
+/*====================================
+=            Default Task            =
+====================================*/
+
+gulp.task('default', function (done) {
+    var tasks = [];
+
+    if (typeof config.weinre === 'object') {
+        tasks.push('weinre');
+    }
+
+    if (typeof config.server === 'object') {
+        tasks.push('connect');
+    }
+
+    tasks.push('watch');
+
+    seq('build', tasks, done);
+});
