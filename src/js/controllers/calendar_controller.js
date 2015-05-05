@@ -1,7 +1,10 @@
-angular.module("area51Tools.controllers.calendar", [])
-    .controller('calendarController', ['$scope', function ($scope) {
+angular.module("area51Tools.controllers.calendar", ['toastr'])
+    .controller('calendarController', ['$scope','toastr', function ($scope, toastr) {
         "use strict";
+        //16226295143-1tn95lqchvbqh4385bqjq422jthvmm16.apps.googleusercontent.com
         var CLIENT_ID = '16226295143-1tn95lqchvbqh4385bqjq422jthvmm16.apps.googleusercontent.com',
+            //'16226295143-1tn95lqchvbqh4385bqjq422jthvmm16.apps.googleusercontent.com', --android
+            //'16226295143-ukm3a7qfmota0qqa9qaoa771rdcqi87n.apps.googleusercontent.com', --localhost:8000
             SCOPES = ['https://www.googleapis.com/auth/calendar.readonly'],
             Calendars = [
                 {
@@ -30,6 +33,7 @@ angular.module("area51Tools.controllers.calendar", [])
 
 
         angular.element(document).ready(function () {
+            logger('begin auth call');
             gapi.auth.authorize({
                 'client_id': CLIENT_ID,
                 'scope': SCOPES,
@@ -43,6 +47,7 @@ angular.module("area51Tools.controllers.calendar", [])
          * @param {Object} authResult Authorization result.
          */
         function handleAuthResult(authResult) {
+            //logger('begin handleAuthResult: ' + authResult);
             var authorizeDiv = document.getElementById('authorize-div');
             if (authResult && !authResult.error) {
                 // Hide auth UI, then load Calendar client library.
@@ -61,6 +66,7 @@ angular.module("area51Tools.controllers.calendar", [])
          * @param {Event} event Button click event.
          */
         $scope.handleAuthClick = function () {
+            logger('auth click');
             gapi.auth.authorize({
                     client_id: CLIENT_ID,
                     scope: SCOPES,
@@ -75,6 +81,7 @@ angular.module("area51Tools.controllers.calendar", [])
          * once client library is loaded.
          */
         function loadCalendarApi() {
+            logger('load calendar');
             gapi.client.load('calendar', 'v3', getAllEvents);
         }
 
@@ -100,6 +107,7 @@ angular.module("area51Tools.controllers.calendar", [])
         }
 
         function listUpcomingEvents(calendar) {
+            logger('get: ' + calendar.name);
             var request = gapi.client.calendar.events.list({
                 'calendarId': calendar.id,
                 'timeMin': (new Date()).toISOString(),
@@ -120,5 +128,9 @@ angular.module("area51Tools.controllers.calendar", [])
                 }
 
             });
+        }
+        
+        function logger(message){
+            toastr.info(message);
         }
             }]);
