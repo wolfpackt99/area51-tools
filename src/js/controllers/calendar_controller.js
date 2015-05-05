@@ -38,6 +38,7 @@ angular.module("area51Tools.controllers.calendar", ['toastr'])
                 gapi.auth.authorize({
                     'client_id': CLIENT_ID,
                     'scope': SCOPES,
+                    'redirect_uri': 'urn:ietf:wg:oauth:2.0:oob',
                     'immediate': true
                 }, handleAuthResult);
             } catch (e) {
